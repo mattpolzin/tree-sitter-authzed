@@ -25,12 +25,31 @@ module.exports = grammar({
         field("permission_expresssion", $.perm_expression)
       ),
 
+    cel_expression: ($) =>
+      choice(
+        $.identifier
+      ),
+
+    parameter: ($) =>
+      seq(
+        $.identifier,
+        $.cel_type
+      ),
+
+    parameters: ($) =>
+      seq(
+        $.parameter_start,
+        optional(seq($.parameter, repeat(seq($.comma_literal, $.parameter)))),
+        $.parameter_end
+      ),
+
     block: ($) =>
       seq(
         $.identifier,
         repeat(choice($.slash_literal, $.identifier)),
+        optional($.parameters),
         $.block_start,
-        optional(repeat(choice($.relation, $.permission))),
+        optional(repeat(choice($.relation, $.permission, $.cel_expression))),
         $.block_end
       ),
 
@@ -40,28 +59,47 @@ module.exports = grammar({
     rel_expression: ($) =>
       prec.right(repeat1(choice($.identifier, $.pipe_literal, $.hash_literal))),
 
-    caveat_literal: ($) => "caveat",
-    relation_literal: ($) => "relation",
-    permission_literal: ($) => "permission",
-    definition_literal: ($) => "definition",
+    cel_type: ($) =>
+      choice(
+        "any",
+        "int",
+        "uint",
+        "bool",
+        "string",
+        "double",
+        "bytes",
+        "duration",
+        "timestamp",
+        "ipaddress",
+        seq("list<", $.cel_type, ">"),
+        seq("map<", $.cel_type, ">"),
+      ),
 
-    plus_literal: ($) => "+",
-    pipe_literal: ($) => "|",
-    slash_literal: ($) => "/",
-    stabby: ($) => "->",
-    block_start: ($) => "{",
-    block_end: ($) => "}",
-    equal_literal: ($) => "=",
-    hash_literal: ($) => "#",
+    caveat_literal: (_$) => "caveat",
+    relation_literal: (_$) => "relation",
+    permission_literal: (_$) => "permission",
+    definition_literal: (_$) => "definition",
 
-    identifier: ($) =>
+    plus_literal: (_$) => "+",
+    pipe_literal: (_$) => "|",
+    slash_literal: (_$) => "/",
+    stabby: (_$) => "->",
+    parameter_start: (_$) => "(",
+    parameter_end: (_$) => ")",
+    block_start: (_$) => "{",
+    block_end: (_$) => "}",
+    equal_literal: (_$) => "=",
+    hash_literal: (_$) => "#",
+    comma_literal: (_$) => ",",
+
+    identifier: (_$) =>
       token(seq(LETTER, repeat(choice(LETTER, UNICODE_LETTER)))),
 
-    comment: ($) =>
+    comment: (_$) =>
       token(
         choice(seq("//", /.*/), seq("/*", /[^*]*\*+([^/*][^*]*\*+)*/, "/"))
       ),
 
-    _whitespace: ($) => token(/\s/),
+    _whitespace: (_$) => token(/\s/),
   },
 });

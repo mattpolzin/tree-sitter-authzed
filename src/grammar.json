@@ -84,6 +84,74 @@
         }
       ]
     },
+    "cel_expression": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "identifier"
+        }
+      ]
+    },
+    "parameter": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "identifier"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "cel_type"
+        }
+      ]
+    },
+    "parameters": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "parameter_start"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "parameter"
+                },
+                {
+                  "type": "REPEAT",
+                  "content": {
+                    "type": "SEQ",
+                    "members": [
+                      {
+                        "type": "SYMBOL",
+                        "name": "comma_literal"
+                      },
+                      {
+                        "type": "SYMBOL",
+                        "name": "parameter"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "parameter_end"
+        }
+      ]
+    },
     "block": {
       "type": "SEQ",
       "members": [
@@ -108,6 +176,18 @@
           }
         },
         {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "parameters"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
           "type": "SYMBOL",
           "name": "block_start"
         },
@@ -126,6 +206,10 @@
                   {
                     "type": "SYMBOL",
                     "name": "permission"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "cel_expression"
                   }
                 ]
               }
@@ -189,6 +273,85 @@
         }
       }
     },
+    "cel_type": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "any"
+        },
+        {
+          "type": "STRING",
+          "value": "int"
+        },
+        {
+          "type": "STRING",
+          "value": "uint"
+        },
+        {
+          "type": "STRING",
+          "value": "bool"
+        },
+        {
+          "type": "STRING",
+          "value": "string"
+        },
+        {
+          "type": "STRING",
+          "value": "double"
+        },
+        {
+          "type": "STRING",
+          "value": "bytes"
+        },
+        {
+          "type": "STRING",
+          "value": "duration"
+        },
+        {
+          "type": "STRING",
+          "value": "timestamp"
+        },
+        {
+          "type": "STRING",
+          "value": "ipaddress"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "list<"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "cel_type"
+            },
+            {
+              "type": "STRING",
+              "value": ">"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "map<"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "cel_type"
+            },
+            {
+              "type": "STRING",
+              "value": ">"
+            }
+          ]
+        }
+      ]
+    },
     "caveat_literal": {
       "type": "STRING",
       "value": "caveat"
@@ -221,6 +384,14 @@
       "type": "STRING",
       "value": "->"
     },
+    "parameter_start": {
+      "type": "STRING",
+      "value": "("
+    },
+    "parameter_end": {
+      "type": "STRING",
+      "value": ")"
+    },
     "block_start": {
       "type": "STRING",
       "value": "{"
@@ -236,6 +407,10 @@
     "hash_literal": {
       "type": "STRING",
       "value": "#"
+    },
+    "comma_literal": {
+      "type": "STRING",
+      "value": ","
     },
     "identifier": {
       "type": "TOKEN",
