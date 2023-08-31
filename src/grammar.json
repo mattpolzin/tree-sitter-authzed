@@ -189,6 +189,10 @@
         }
       }
     },
+    "caveat_literal": {
+      "type": "STRING",
+      "value": "caveat"
+    },
     "relation_literal": {
       "type": "STRING",
       "value": "relation"

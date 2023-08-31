@@ -8,9 +8,9 @@
 #define LANGUAGE_VERSION 14
 #define STATE_COUNT 37
 #define LARGE_STATE_COUNT 2
-#define SYMBOL_COUNT 27
+#define SYMBOL_COUNT 28
 #define ALIAS_COUNT 0
-#define TOKEN_COUNT 15
+#define TOKEN_COUNT 16
 #define EXTERNAL_TOKEN_COUNT 0
 #define FIELD_COUNT 6
 #define MAX_ALIAS_SEQUENCE_LENGTH 5
@@ -18,36 +18,38 @@
 
 enum {
   sym_identifier = 1,
-  sym_relation_literal = 2,
-  sym_permission_literal = 3,
-  sym_definition_literal = 4,
-  sym_plus_literal = 5,
-  sym_pipe_literal = 6,
-  sym_slash_literal = 7,
-  sym_stabby = 8,
-  sym_block_start = 9,
-  sym_block_end = 10,
-  sym_equal_literal = 11,
-  sym_hash_literal = 12,
-  sym_comment = 13,
-  sym__whitespace = 14,
-  sym_source_file = 15,
-  sym_body = 16,
-  sym_relation = 17,
-  sym_permission = 18,
-  sym_block = 19,
-  sym_perm_expression = 20,
-  sym_rel_expression = 21,
-  aux_sym_body_repeat1 = 22,
-  aux_sym_block_repeat1 = 23,
-  aux_sym_block_repeat2 = 24,
-  aux_sym_perm_expression_repeat1 = 25,
-  aux_sym_rel_expression_repeat1 = 26,
+  sym_caveat_literal = 2,
+  sym_relation_literal = 3,
+  sym_permission_literal = 4,
+  sym_definition_literal = 5,
+  sym_plus_literal = 6,
+  sym_pipe_literal = 7,
+  sym_slash_literal = 8,
+  sym_stabby = 9,
+  sym_block_start = 10,
+  sym_block_end = 11,
+  sym_equal_literal = 12,
+  sym_hash_literal = 13,
+  sym_comment = 14,
+  sym__whitespace = 15,
+  sym_source_file = 16,
+  sym_body = 17,
+  sym_relation = 18,
+  sym_permission = 19,
+  sym_block = 20,
+  sym_perm_expression = 21,
+  sym_rel_expression = 22,
+  aux_sym_body_repeat1 = 23,
+  aux_sym_block_repeat1 = 24,
+  aux_sym_block_repeat2 = 25,
+  aux_sym_perm_expression_repeat1 = 26,
+  aux_sym_rel_expression_repeat1 = 27,
 };
 
 static const char * const ts_symbol_names[] = {
   [ts_builtin_sym_end] = "end",
   [sym_identifier] = "identifier",
+  [sym_caveat_literal] = "caveat_literal",
   [sym_relation_literal] = "relation_literal",
   [sym_permission_literal] = "permission_literal",
   [sym_definition_literal] = "definition_literal",
@@ -78,6 +80,7 @@ static const char * const ts_symbol_names[] = {
 static const TSSymbol ts_symbol_map[] = {
   [ts_builtin_sym_end] = ts_builtin_sym_end,
   [sym_identifier] = sym_identifier,
+  [sym_caveat_literal] = sym_caveat_literal,
   [sym_relation_literal] = sym_relation_literal,
   [sym_permission_literal] = sym_permission_literal,
   [sym_definition_literal] = sym_definition_literal,
@@ -111,6 +114,10 @@ static const TSSymbolMetadata ts_symbol_metadata[] = {
     .named = true,
   },
   [sym_identifier] = {
+    .visible = true,
+    .named = true,
+  },
+  [sym_caveat_literal] = {
     .visible = true,
     .named = true,
   },
@@ -7791,36 +7798,55 @@ static bool ts_lex_keywords(TSLexer *lexer, TSStateId state) {
   eof = lexer->eof(lexer);
   switch (state) {
     case 0:
-      if (lookahead == 'd') ADVANCE(1);
+      if (lookahead == 'c') ADVANCE(1);
+      if (lookahead == 'd') ADVANCE(2);
       END_STATE();
     case 1:
-      if (lookahead == 'e') ADVANCE(2);
+      if (lookahead == 'a') ADVANCE(3);
       END_STATE();
     case 2:
-      if (lookahead == 'f') ADVANCE(3);
+      if (lookahead == 'e') ADVANCE(4);
       END_STATE();
     case 3:
-      if (lookahead == 'i') ADVANCE(4);
+      if (lookahead == 'v') ADVANCE(5);
       END_STATE();
     case 4:
-      if (lookahead == 'n') ADVANCE(5);
+      if (lookahead == 'f') ADVANCE(6);
       END_STATE();
     case 5:
-      if (lookahead == 'i') ADVANCE(6);
+      if (lookahead == 'e') ADVANCE(7);
       END_STATE();
     case 6:
-      if (lookahead == 't') ADVANCE(7);
-      END_STATE();
-    case 7:
       if (lookahead == 'i') ADVANCE(8);
       END_STATE();
-    case 8:
-      if (lookahead == 'o') ADVANCE(9);
+    case 7:
+      if (lookahead == 'a') ADVANCE(9);
       END_STATE();
-    case 9:
+    case 8:
       if (lookahead == 'n') ADVANCE(10);
       END_STATE();
+    case 9:
+      if (lookahead == 't') ADVANCE(11);
+      END_STATE();
     case 10:
+      if (lookahead == 'i') ADVANCE(12);
+      END_STATE();
+    case 11:
+      ACCEPT_TOKEN(sym_caveat_literal);
+      END_STATE();
+    case 12:
+      if (lookahead == 't') ADVANCE(13);
+      END_STATE();
+    case 13:
+      if (lookahead == 'i') ADVANCE(14);
+      END_STATE();
+    case 14:
+      if (lookahead == 'o') ADVANCE(15);
+      END_STATE();
+    case 15:
+      if (lookahead == 'n') ADVANCE(16);
+      END_STATE();
+    case 16:
       ACCEPT_TOKEN(sym_definition_literal);
       END_STATE();
     default:
@@ -7872,6 +7898,7 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
   [0] = {
     [ts_builtin_sym_end] = ACTIONS(1),
     [sym_identifier] = ACTIONS(1),
+    [sym_caveat_literal] = ACTIONS(1),
     [sym_relation_literal] = ACTIONS(1),
     [sym_permission_literal] = ACTIONS(1),
     [sym_definition_literal] = ACTIONS(1),

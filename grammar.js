@@ -40,6 +40,7 @@ module.exports = grammar({
     rel_expression: ($) =>
       prec.right(repeat1(choice($.identifier, $.pipe_literal, $.hash_literal))),
 
+    caveat_literal: ($) => "caveat",
     relation_literal: ($) => "relation",
     permission_literal: ($) => "permission",
     definition_literal: ($) => "definition",
