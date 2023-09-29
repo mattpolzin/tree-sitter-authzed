@@ -7,11 +7,8 @@
 
 (block
   (permission
-    (permission_literal) @function
+    (permission_literal) @variable.builtin
      (identifier) @property))
-
-
-((permission_literal) @variable.builtin)
 
 (permission (identifier) @type)
 (relation (identifier) @constant)
@@ -28,7 +25,6 @@
 ((hash_literal) @comment)
 
 ; relations
-((relation_literal) @function)
 (rel_expression (identifier) @property)
 
 
@@ -40,7 +36,7 @@
   (hash_literal)
   .
   (identifier) @constant
-  ) @coment))
+  ) @comment))
 
 (call_expression
   (selector_expression
